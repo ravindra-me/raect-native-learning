@@ -22,107 +22,12 @@ import {
   FlatList,
   Touchable,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
-// import {
-//   Colors,
-//   DebugInstructions,
-//   Header,
-//   LearnMoreLinks,
-//   ReloadInstructions,
-// } from 'react-native/Libraries/NewAppScreen';
-
-import Header from './components/header.js';
-
-// function UserName(props) {
-//   console.log(props);
-//   const {name, todo} = props;
-//   return (
-//     <>
-//       <FlatList
-//         numColumns={2}
-//         keyExtractor={item => item.name}
-//         renderItem={({item}) => {
-//           return (
-//             <TouchableOpacity
-//               style={{color: 'white', backgroundColor: 'black'}}
-//               onPress={() => console.log(item)}>
-//               <Text
-//                 style={{padding: 5, backgroundColor: 'gray', borderRadius: 10}}>
-//                 {item.name}
-//               </Text>
-//             </TouchableOpacity>
-//           );
-//         }}
-//         data={todo}
-//       />
-//       <View>
-//         {todo.map((elem, index) => (
-//           <View
-//             key={index}
-//             style={{display: 'flex', justifyContent: 'space-between'}}>
-//             <Text>{elem.name}</Text>
-//             <Button title="delete" />
-//           </View>
-//         ))}
-//       </View>
-//     </>
-//   );
-// }
-
-// const initial = [
-//   {
-//     name: 'ravindra',
-//   },
-// ];
-
-// function App() {
-//   const [state, setstate] = useState('');
-//   const [todo, setTodod] = useState(initial);
-
-//   const handleTodo = () => {
-//     setTodod(preState => {
-//       return todo.concat({name: state});
-//     });
-//   };
-
-//   console.log({todo}, 'Ravindra');
-
-//   return (
-//     <SafeAreaView style={{flex: 1}}>
-//       {/* <ScrollView contentContainerStyle={{flex: 1}}> */}
-//       <View style={styles.header}>
-//         <Text style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>
-//           Todo
-//           <Text
-//             style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>
-//             App
-//           </Text>
-//         </Text>
-//       </View>
-//       <View style={styles.baseText}>
-//         <TextInput
-//           placeholder="enter the user name"
-//           style={styles.textInput}
-//           value={state}
-//           onChangeText={val => setstate(val)}
-//         />
-//         <Button
-//           title="Add Todo"
-//           onPress={handleTodo}
-//           style={styles.submitBtn}
-//           color="black"
-//           backgroundColor="black"
-//         />
-//       </View>
-//       <View>
-//         <UserName name="Praveen" todo={todo} />
-//       </View>
-//       {/* </ScrollView> */}
-//     </SafeAreaView>
-//   );
-// }
-
+import Header from './components/header';
+import TodoItem from './components/todoItem';
+import AddTodo from './components/addTodo';
 const data = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -142,17 +47,32 @@ function App() {
   // view port for style container
   const [todos, setTodo] = useState(data);
 
+  const handleAddTodo = obj => {
+    if (obj.title.length > 3) {
+      setTodo(preTodo => {
+        return preTodo.concat(obj);
+      });
+    } else {
+      Alert.alert('OOPS!', 'Todo mush be over three character long', [
+        {text: 'Understood', onPress: () => console.log('alert close')},
+      ]);
+    }
+  };
+
   return (
-    <SafeAreaView>
-      <View>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
         <Header />
         <View>
+          <AddTodo onHandler={handleAddTodo} />
+        </View>
+        <View style={{flex: 1}}>
           <FlatList
             data={todos}
             renderItem={({item}) => {
-              console.log(item);
-              return <Text>{item.title}</Text>;
+              return <TodoItem item={item} />;
             }}
+            style={{flex: 1}}
           />
         </View>
       </View>
@@ -163,6 +83,9 @@ function App() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   baseText: {
     display: 'flex',
     fontFamily: 'Cochin',

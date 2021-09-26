@@ -25,9 +25,13 @@ import {
   Alert,
 } from 'react-native';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from './components/header';
 import TodoItem from './components/todoItem';
 import AddTodo from './components/addTodo';
+
+// Icon.loadFont().then();
+
 const data = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -62,6 +66,14 @@ function App() {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
+        {/* <Icon name="ios-book" color="#4F8EF7" /> */}
+        <Icon
+          name="facebook"
+          backgroundColor="#3b5998"
+          // onPress={this.loginWithFacebook}
+        >
+          Login with Facebook
+        </Icon>
         <Header />
         <View>
           <AddTodo onHandler={handleAddTodo} />
